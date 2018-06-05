@@ -36,7 +36,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     adapter = HomeAdapter(appExecutors) { video ->
       //TODO item onClick
     }
-//    recyclerView.adapter = adapter
+    recyclerView.adapter = adapter
   }
 
   companion object {

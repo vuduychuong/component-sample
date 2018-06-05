@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.android.samples.arch.componentsbasicsample.AppExecutors
 import com.android.samples.arch.componentsbasicsample.R
 import com.android.samples.arch.componentsbasicsample.databinding.ItemHomeBinding
-import com.android.samples.arch.componentsbasicsample.datas.model.Video
+import com.android.samples.arch.componentsbasicsample.data.model.Video
 import com.android.samples.arch.componentsbasicsample.ui.common.DataBoundListAdapter
 
 class HomeAdapter(

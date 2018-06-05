@@ -25,11 +25,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-  compileSdkVersion versions.target_sdk
+  compileSdkVersion build_versions.target_sdk
+  buildToolsVersion build_versions.build_tools
   defaultConfig {
     applicationId "com.android.samples.arch.componentsbasicsample"
-    minSdkVersion versions.min_sdk
-    targetSdkVersion versions.target_sdk
+    minSdkVersion build_versions.min_sdk
+    targetSdkVersion build_versions.target_sdk
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -43,6 +44,10 @@ android {
   dataBinding {
     enabled = true
   }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 kotlin {
@@ -53,29 +58,101 @@ kotlin {
 
 dependencies {
   // See versions.gradle file
-  implementation fileTree(dir: 'libs', include: ['*.jar'])
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
-  implementation "com.android.support:appcompat-v7:$versions.support"
-  implementation "com.android.support.constraint:constraint-layout:$versions.constraint_layout"
-  implementation "com.android.support:appcompat-v7:$versions.support"
-  implementation "com.android.support:design:$versions.support"
+//  implementation fileTree(dir: 'libs', include: ['*.jar'])
+//  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+//  implementation "com.android.support:appcompat-v7:$versions.support"
+//  implementation "com.android.support.constraint:constraint-layout:$versions.constraint_layout"
+//  implementation "com.android.support:design:$versions.support"
+//
+//  // LiveData + ViewModel
+//  implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
+//  implementation "android.arch.persistence.room:runtime:$versions.room"
+//
+//  // Navigation
+//
+//  implementation "android.arch.navigation:navigation-fragment:$versions.navigation"
+//  implementation "android.arch.navigation:navigation-ui:$versions.navigation"
+//
+//  // Coroutine
+//  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
+//
+//  // Dagger
+//  implementation "com.google.dagger:dagger:$versions.dagger"
+//  implementation "com.google.dagger:dagger-android:$versions.dagger"
+//  implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+//  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+//  kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
+//
+//  //Retrofit
+//  implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+//  implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+//  implementation "com.squareup.retrofit2:retrofit-mock:$versions.retrofit"
+//  implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp_logging_interceptor}"
+//
+//  implementation "com.jakewharton.timber:timber:$versions.timber"
 
-  // LiveData + ViewModel
-  implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
+  implementation deps.kotlin.stdlib
+  implementation deps.kotlin.coroutines
+  implementation deps.support.app_compat
+  implementation deps.support.constraint_layout
+  implementation deps.support.design
+//  implementation deps.support.recyclerview
+//  implementation deps.support.cardview
 
-  // Navigation
+  implementation deps.lifecycle.runtime
+  implementation deps.lifecycle.extensions
+  implementation deps.lifecycle.java8
+  implementation deps.room.runtime
 
-  implementation "android.arch.navigation:navigation-fragment:$versions.navigation"
-  implementation "android.arch.navigation:navigation-ui:$versions.navigation"
-  implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+  implementation deps.navigation.fragment
+  implementation deps.navigation.fragment_ui
 
-  // Coroutine
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
+  implementation deps.dagger.runtime
+  implementation deps.dagger.android
+  implementation deps.dagger.android_support
 
-  // Dagger
-  implementation "com.google.dagger:dagger:$versions.dagger"
-  implementation "com.google.dagger:dagger-android:$versions.dagger"
-  implementation "com.google.dagger:dagger-android-support:$versions.dagger"
-  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
-  kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
+  implementation deps.retrofit.runtime
+  implementation deps.retrofit.gson
+  implementation deps.retrofit.mock
+  implementation deps.okhttp_logging_interceptor
+
+  implementation deps.timber
+
+  kapt deps.dagger.android_support_compiler
+  kapt deps.dagger.compiler
+  kapt deps.room.compiler
+  kapt deps.lifecycle.compiler
+
+
+//  implementation deps.glide.runtime
+
+
+  testImplementation deps.junit
+  testImplementation deps.mock_web_server
+  testImplementation(deps.arch_core.testing, {
+    exclude group: 'com.android.support', module: 'support-compat'
+    exclude group: 'com.android.support', module: 'support-annotations'
+    exclude group: 'com.android.support', module: 'support-core-utils'
+  })
+  testImplementation deps.mockito.core
+
+  androidTestImplementation deps.navigation.testing_ktx
+  androidTestImplementation deps.support.app_compat
+//  androidTestImplementation deps.support.recyclerview
+//  androidTestImplementation deps.support.cardview
+  androidTestImplementation deps.support.design
+
+  androidTestImplementation(deps.espresso.core, {
+    exclude group: 'com.android.support', module: 'support-annotations'
+    exclude group: 'com.google.code.findbugs', module: 'jsr305'
+  })
+  androidTestImplementation(deps.espresso.contrib, {
+    exclude group: 'com.android.support', module: 'support-annotations'
+    exclude group: 'com.google.code.findbugs', module: 'jsr305'
+  })
+
+  androidTestImplementation(deps.arch_core.testing, {
+  })
+  androidTestImplementation deps.dexmaker
+  androidTestImplementation deps.mockito.core, { exclude group: 'net.bytebuddy' }
 }
